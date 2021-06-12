@@ -18,8 +18,12 @@ import javafx.stage.Stage;
  */
 
 public class Main extends Application {
+	
+	//expor minha sena principal guardando a referencia neste atributo
+	private static Scene mainScene;
+			
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) {		
 		
 		try {
 			// Instanciando novo objeto do tipo loader tipo FXMLLoader, 
@@ -36,7 +40,8 @@ public class Main extends Application {
 			
 			// vou carregar a sena passando scrollPane como argumento
 			// No palco da sena que vai chegar pela instancia Start(Stage Application)				
-			Scene mainScene = new Scene(scrollPane); 
+			// atributo privado abaixo crio o metodo para pegar a referencia
+			mainScene = new Scene(scrollPane); 
 			// Setando ele como sena Principal
 			primaryStage.setScene(mainScene);
 			// Definindo um Titulo Para o Palco
@@ -48,6 +53,11 @@ public class Main extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	//pegando a referencia do mainScene
+	public static Scene getMainScene() {
+		return mainScene;
 	}
 
 	public static void main(String[] args) {
