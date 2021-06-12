@@ -3,9 +3,10 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.VBox;
 
 // controle que inica o Initializable
 public class MainViewController implements Initializable{
@@ -56,6 +57,8 @@ public class MainViewController implements Initializable{
 	
 	// Metodo da Interface Initializable
 	@Override
-	public void initialize(URL uri, ResourceBundle rb) {		
+	public void initialize(URL uri, ResourceBundle rb) {
+		// TODO Auto-generated method stub
+		
 	}
 }
