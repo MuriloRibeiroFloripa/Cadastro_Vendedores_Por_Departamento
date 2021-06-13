@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import aplicacao.Main;
 import gui.util.Alerts;
@@ -41,7 +42,16 @@ public class MainViewController implements Initializable{
 	// metodo da interface Initializable
 	@FXML
 	public void onMenuItemDepartamentosAction() {
-		loadView2("/gui/DepartamentoLista.fxml");
+		loadView("/gui/DepartamentoLista.fxml", (DepartamentoListaController controller) -> { 
+			controller.setDepartamentoServicos(new DepartamentoSevicos());
+			controller.updateTableView(); // janela com ação
+		});
+	}
+	
+	@FXML
+	public void onMenuItemSobreAction() {
+		//System.out.println("onMenuItemSobreAction");
+		loadView("/gui/Sobre.fxml", x -> {});	// janela sem ação	
 	}
 	
 	@FXML
@@ -49,28 +59,21 @@ public class MainViewController implements Initializable{
 		System.out.println("onMenuItemManualAction");
 	}
 	
-	@FXML
 	public void onMenuItemOqueAdeNovoAction() {
-		System.out.println("onMenuItemOqueAdeNovoAction");
+	System.out.println("onMenuItemOqueAdeNovoAction");
 	}
 	
 	@FXML
 	public void onMenuItemAtualizaSistemaAction() {
 		System.out.println("onMenuItemAtualizaSistemaAction");
 	}
-	
-	@FXML
-	public void onMenuItemSobreAction() {
-		//System.out.println("onMenuItemSobreAction");
-		loadView("/gui/Sobre.fxml");		
-	}
-	
+
 	// Metodo da Interface Initializable
 	@Override
 	public void initialize(URL uri, ResourceBundle rb) {		
 	}
 	
-	private synchronized void loadView(String absoluteName) { // synchronized garante para ter interupção inesperada
+	private synchronized <T> void loadView(String absoluteName, Consumer<T> acaoDeInicialização) { // synchronized garante para ter interupção inesperada
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			VBox newVBox = loader.load();
@@ -87,38 +90,11 @@ public class MainViewController implements Initializable{
 			Node mainMenu = mainVbox.getChildren().get(0);//recebe o primeiro filho da VBox da janela principal
 			mainVbox.getChildren().clear(); //limpa todos os filhos do MainVBox
 			mainVbox.getChildren().add(mainMenu); //adciona no mainVBox mainMenu, 
-			mainVbox.getChildren().addAll(newVBox.getChildren()); //agora adcionar mainVbox os filhos do newVbox			
+			mainVbox.getChildren().addAll(newVBox.getChildren()); //agora adcionar mainVbox os filhos do newVbox
 			
-		}
-		catch (IOException e) {
-			Alerts.showAlert("Io Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
-			}
-	}
-	
-	// copia do loadView para testes como loadView2
-	private synchronized void loadView2(String absoluteName) { // synchronized garante para ter interupção inesperada
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-			VBox newVBox = loader.load();
-			
-			//manipulando a cena principal incluindo nela alem do mainMenu os filhos da janela que eu estiver abrindo
-			//Mostrar a View dentro da janela principal pegando a referência do método
-			// Main.java Scene
-			// insere dentro ScrollPane os filhos da tela Abaut preservando o Menu box e excluindo os filhos MainView
-			
-			Scene mainScene = Main.getMainScene();
-			VBox mainVbox = (VBox)((ScrollPane)mainScene.getRoot()).getContent();
-			
-			// inserir no lugar os filhos da tela About, preservando o MenuBar.
-			Node mainMenu = mainVbox.getChildren().get(0);//recebe o primeiro filho da VBox da janela principal
-			mainVbox.getChildren().clear(); //limpa todos os filhos do MainVBox
-			mainVbox.getChildren().add(mainMenu); //adciona no mainVBox mainMenu, 
-			mainVbox.getChildren().addAll(newVBox.getChildren()); //agora adcionar mainVbox os filhos do newVbox	
-			
-			 // Carregar a View e acessar o controler atraves de uma referencia
-			DepartamentoListaController controller = loader.getController();
-			controller.setDepartamentoServicos(new DepartamentoSevicos()); //injetando as dependencia no controller 
-			controller.updateTableView(); // Atualizando a tableView, fazendo um processo manual chamar e atualizar os dados na tela da View			
+			// ativando a funcão passada pelo Consumer
+			T controller = loader.getController();//retorna o controlador do tipo que for chamado	
+			acaoDeInicialização.accept(controller);//executar a ação chamando função accept do Consumer
 		}
 		catch (IOException e) {
 			Alerts.showAlert("Io Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
