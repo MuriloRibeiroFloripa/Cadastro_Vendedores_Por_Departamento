@@ -18,7 +18,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import modelo.servico.DepartamentoSevicos;
 
-
 // controle que inica o Initializable
 public class MainViewController implements Initializable{
 	
@@ -99,6 +98,6 @@ public class MainViewController implements Initializable{
 		}
 		catch (IOException e) {
 			Alerts.showAlert("Io Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
-			}
+		}
 	}
 }
