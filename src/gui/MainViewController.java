@@ -40,7 +40,7 @@ public class MainViewController implements Initializable{
 	// metodo da interface Initializable
 	@FXML
 	public void onMenuItemDepartamentosAction() {
-		System.out.println("onMenuItemDepartamentosAction");
+		loadView("/gui/DepartamentoLista.fxml");
 	}
 	
 	@FXML
@@ -61,7 +61,7 @@ public class MainViewController implements Initializable{
 	@FXML
 	public void onMenuItemSobreAction() {
 		//System.out.println("onMenuItemSobreAction");
-		loadView("/gui/Sobre.fxml");
+		loadView("/gui/Sobre.fxml");		
 	}
 	
 	// Metodo da Interface Initializable
