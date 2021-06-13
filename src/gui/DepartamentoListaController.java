@@ -17,6 +17,9 @@ import javafx.stage.Stage;
 import modelo.entidade.Departamento;
 import modelo.servico.DepartamentoSevicos;
 
+
+
+
 public class DepartamentoListaController implements Initializable{
 	
 	/*
