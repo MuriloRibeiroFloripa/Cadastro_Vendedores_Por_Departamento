@@ -62,8 +62,11 @@ public class DepartamentoListaController implements Initializable{
 		// Chamando createDialogForm e acessando a função criada na pacote gui.util 
 		// Classe Utils, função currentStage
 		Stage parentStage = Utils.currentStage(event); //pegando referencia para Stage atual
+		
+		Departamento obj = new Departamento();
+		
 		// Passo a referencia para ele criar a janela de formulario
-		createDialogForm("/gui/DepartamentoFormato.fxml", parentStage); 
+		createDialogForm(obj, "/gui/DepartamentoFormato.fxml", parentStage); 
 	}
 	
 	// criando acoplamento dependência fraca através do metodo set.
@@ -102,7 +105,7 @@ public class DepartamentoListaController implements Initializable{
 	
 	// Dentro da classe DepartmentoListaController, criar createDialogForm method, 
 	// Informando quem criou a janela de dialogo
-	private void createDialogForm(String absoluteName, Stage parentStage) {
+	private void createDialogForm(Departamento obj, String absoluteName, Stage parentStage) {
 		// instanciar a janela de dialogo com tratamento de exception
 		try {
 			// Lógica para abrir a janela de formulario copiando da Classe MainViewControler da acaoDeInicialização 
@@ -110,6 +113,13 @@ public class DepartamentoListaController implements Initializable{
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			// carregando a view
 			Pane pane = loader.load();
+			
+			//pegando uma referencia para o controlador
+			DepartamentoFormatoController controller = loader.getController();
+			//injetar o departamento no controlador
+			controller.setDepartamento(obj);
+			//carregar os dados no formulario
+			controller.atualizaDadosFormulario();			
 			
 			// Sempre que criar uma janela molda na frente de uma janela existente
 			// temos que instanciar o novo Palco (Sera um palco na frente de outro).
